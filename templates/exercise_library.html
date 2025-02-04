@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Exercise Library{% endblock %}
+
+{% block content %}
+<div class="claude-container">
+    <h1>Exercise Library</h1>
+    {% if exercises %}
+        <ul>
+            {% for exercise in exercises %}
+                <li>
+                    <strong>{{ exercise.name }}</strong>
+                    {% if exercise.description %}
+                        - {{ exercise.description }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No exercises available at this moment.</p>
+    {% endif %}
+</div>
+{% endblock %} 

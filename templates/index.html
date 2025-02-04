@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Workout AI Coach{% endblock %}
+
+{% block content %}
+<!-- Remove the default header from base.html -->
+{% block header %}{% endblock %}
+
+<header>
+    <h1 class="header-title">Workout AI Coach</h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Left weight plates -->
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                
+                <!-- Bar -->
+                <path d="M7 12h10"/>
+                
+                <!-- Right weight plates -->
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="claude-container">
+    <div class="greeting-container">
+        <div class="greeting">
+            <span class="greeting-icon">✴️</span>
+            {{ greeting }}
+        </div>
+    </div>
+
+    <div class="input-section">
+        <div class="input-label">Upload your workout video for analysis</div>
+        <form action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data" class="chat-input-container">
+            <label class="file-upload">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Click to upload video or drag and drop</span>
+                <input type="file" name="video" accept="video/*" onchange="updateFileName(this)">
+            </label>
+            <textarea class="chat-textarea" placeholder="Add any specific questions or concerns about your form..." name="notes"></textarea>
+            <button type="submit" class="tool-item" style="align-self: flex-end;">Analyze Workout</button>
+        </form>
+    </div>
+
+    <div class="collaboration-section">
+        <div class="collaboration-text">Additional Tools</div>
+        <ul class="tools-list">
+            <li class="tool-item">
+                <a href="{{ url_for('previous_analyses') }}">View Previous Analyses</a>
+            </li>
+            <li class="tool-item">
+                <a href="{{ url_for('exercise_library') }}">Exercise Library</a>
+            </li>
+            <li class="tool-item">
+                <a href="{{ url_for('form_guidelines') }}">Form Guidelines</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+function updateFileName(input) {
+    const fileName = input.files[0]?.name;
+    if (fileName) {
+        input.parentElement.querySelector('span').textContent = fileName;
+    }
+}
+</script>
+{% endblock %} 

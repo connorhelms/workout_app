@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Workout AI Coach{% endblock %}
+
+{% block content %}
+<!-- Remove the default header from base.html -->
+{% block header %}{% endblock %}
+
+<header>
+    <h1 class="header-title">
+        <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+    </h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                <path d="M7 12h10"/>
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
+        </div>
+    </div>
+</header>
+
+<div class="claude-container">
+    <div class="greeting-container">
+        <div class="greeting">
+            <span class="greeting-icon">✴️</span>
+            {{ greeting }}
+        </div>
+    </div>
+
+    <div class="auth-container">
+        <h2 class="page-title">Login</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <ul class="flash-messages">
+                {% for category, message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        {% endwith %}
+        
+        <form method="post" class="auth-form">
+            <input type="hidden" name="next" value="{{ url_for('home') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <button type="submit" class="auth-button">Login</button>
+        </form>
+        
+        <p class="auth-link">
+            Don't have an account? <a href="{{ url_for('register') }}">Register</a>
+        </p>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,1131 @@
+/* Reset default margin/padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root,
+html {
+    /* Light theme variables */
+    --background-color: #ffffff;
+    --secondary-bg: #f9f9f9;
+    --text-color: #1a1a1a;
+    --secondary-text: #666666;
+    --border-color: #e5e5e5;
+    --input-bg: #f9f9f9;
+    --card-bg: #ffffff;
+    --hover-bg: #f5f5f5;
+    --accent-color: #6e56cf;
+    --error-bg: #ffdddd;
+    --error-border: #f44336;
+    --wave-bg: #0066ff;
+    --transition-speed: 0.3s;
+    --transition-timing: ease;
+}
+
+html.dark-mode,
+body.dark-mode {
+    /* Dark theme variables */
+    --background-color: #1a1a1a;
+    --secondary-bg: #2a2a2a;
+    --text-color: #ffffff;
+    --secondary-text: #b3b3b3;
+    --border-color: #333333;
+    --input-bg: #2a2a2a;
+    --card-bg: #2a2a2a;
+    --hover-bg: #333333;
+    --accent-color: #9f8cff;
+    --error-bg: #442222;
+    --error-border: #ff6b6b;
+    --form-bg: #2a2a2a;
+    --input-text: #ffffff;
+}
+
+/* Base styles */
+html, body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    transition: all 0.3s ease;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--background-color);
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.header-title {
+    color: var(--text-color);
+    font-size: 28px;
+    font-weight: 500;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    transition: color 0.3s;
+}
+
+.dark-mode-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-color);
+}
+
+/* Container styles */
+.claude-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    background-color: var(--background-color);
+    min-height: calc(100vh - 65px); /* Subtract header height */
+}
+
+/* Menu controls */
+.header-controls {
+    margin-left: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-icon {
+    stroke: var(--text-color);
+    transition: stroke 0.3s ease;
+}
+
+/* Dark mode specific overrides */
+body.dark-mode header {
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .header-title {
+    color: var(--text-color);
+}
+
+body.dark-mode .menu-button {
+    color: var(--text-color);
+}
+
+body.dark-mode .menu-icon {
+    stroke: var(--text-color);
+}
+
+/* Remove any conflicting styles */
+.container {
+    padding: 0;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    background-color: var(--accent-color);
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+.flash-messages ul {
+    list-style: none;
+    padding: 0;
+}
+
+.flash-messages li {
+    margin-bottom: 5px;
+    padding: 8px;
+    background-color: var(--error-bg);
+    border-left-color: var(--error-border);
+    color: var(--text-color);
+}
+
+/* Dashboard specific styles */
+.session-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.session-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid var(--text-color);
+    border-radius: 4px;
+}
+
+/* Chat Container */
+.chat-container {
+    background-color: var(--background-color);
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    width: 250px;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+}
+
+.sidebar a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Chat Main */
+.chat-main {
+    background-color: var(--background-color);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chat Header */
+.chat-header {
+    background-color: #3498db;
+    color: #fff;
+    padding: 20px;
+}
+
+/* Chat Body */
+.chat-body {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Chat Message */
+.message {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+}
+
+/* Bot and user messages styling */
+.message.bot {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    align-self: flex-start;
+}
+
+.message.user {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    align-self: flex-end;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    border-top: 1px solid var(--border-color);
+    padding: 10px;
+}
+
+.chat-input input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+.chat-input button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-input button:disabled, 
+.chat-input input:disabled {
+    background-color: #ccc;
+    cursor: default;
+}
+
+body.dark-mode .input-section,
+body.dark-mode .collaboration-section {
+    background-color: var(--input-bg);
+}
+
+body.dark-mode .tool-item {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+    color: var(--secondary-text);
+}
+
+body.dark-mode .tool-item:hover {
+    background-color: var(--hover-bg);
+}
+
+body.dark-mode .plan-status {
+    color: var(--secondary-text);
+}
+
+body.dark-mode .greeting {
+    color: var(--text-color);
+}
+
+body.dark-mode .input-label,
+body.dark-mode .model-selector,
+body.dark-mode .collaboration-text {
+    color: var(--secondary-text);
+}
+
+/* Input section styling */
+.input-section {
+    background-color: var(--secondary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.input-label, 
+.model-selector,
+.collaboration-text {
+    color: var(--secondary-text);
+}
+
+/* Tool items styling */
+.tool-item {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.tool-item:hover {
+    background-color: var(--hover-bg);
+}
+
+/* Chat textarea styling */
+.chat-textarea {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.chat-textarea::placeholder {
+    color: var(--secondary-text);
+}
+
+/* File upload styling */
+.file-upload {
+    background-color: var(--secondary-bg);
+    border: 2px dashed var(--border-color);
+    color: var(--secondary-text);
+}
+
+.file-upload:hover {
+    border-color: var(--accent-color);
+}
+
+/* Menu dropdown styling */
+.menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    min-width: 180px;
+}
+
+/* Show dropdown on hover */
+.header-controls:hover .menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu-item {
+    padding: 12px 24px;
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+}
+
+.menu-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.menu-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 8px 0;
+}
+
+/* Greeting styling */
+.greeting {
+    color: var(--text-color);
+}
+
+/* Add smooth transitions */
+.input-section,
+.tool-item,
+.chat-textarea,
+.menu-dropdown,
+.file-upload,
+.message,
+.collaboration-section {
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+/* Additional dark mode specific overrides */
+body.dark-mode .chat-container,
+body.dark-mode .chat-main,
+body.dark-mode .sidebar {
+    background-color: var(--background-color);
+}
+
+body.dark-mode .message.bot {
+    background-color: var(--input-bg);
+}
+
+body.dark-mode .message.user {
+    background-color: var(--card-bg);
+}
+
+/* Ensure all text is visible in dark mode */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode .chat-textarea {
+    color: var(--text-color);
+}
+
+/* Ensure sidebar text remains visible */
+.sidebar {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.sidebar a {
+    color: var(--text-color);
+}
+
+/* Additional styles from your existing CSS can remain below */
+
+.wave-container {
+    background-color: var(--wave-bg);
+    transition: background-color 0.3s;
+}
+
+.wave-container h1 {
+    color: white;
+    transition: color 0.3s;
+}
+
+/* Update menu button position */
+.header-controls {
+    margin-left: auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Update container background */
+.claude-container {
+    background-color: var(--background-color);
+}
+
+/* Update all other backgrounds */
+.chat-container,
+.chat-main,
+.sidebar,
+header,
+.menu-dropdown {
+    background-color: var(--background-color);
+}
+
+/* Tool items */
+.tool-item {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.tool-item:hover {
+    background-color: var(--hover-bg);
+}
+
+/* File upload */
+.file-upload {
+    background-color: var(--secondary-bg);
+    border: 2px dashed var(--border-color);
+    color: var(--secondary-text);
+}
+
+/* Chat textarea */
+.chat-textarea {
+    background-color: var(--secondary-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+/* Menu dropdown */
+.menu-dropdown {
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+}
+
+.menu-item:hover {
+    background-color: var(--secondary-bg);
+}
+
+/* Form Guidelines Styles */
+.exercise-selector {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: var(--secondary-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.exercise-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.exercise-form label {
+    color: var(--text-color);
+}
+
+.exercise-form select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    min-width: 200px;
+}
+
+.exercise-form select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.exercise-guidelines {
+    margin-top: 30px;
+}
+
+.exercise-guidelines h2 {
+    color: var(--text-color);
+    margin-bottom: 24px;
+}
+
+.guidelines-section {
+    margin: 20px 0;
+    padding: 24px;
+    background-color: var(--secondary-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.guidelines-section h3 {
+    margin-bottom: 16px;
+    color: var(--text-color);
+    font-size: 1.2rem;
+}
+
+.guidelines-section ul {
+    list-style-type: disc;
+    padding-left: 24px;
+    color: var(--text-color);
+}
+
+.guidelines-section li {
+    margin-bottom: 12px;
+    color: var(--secondary-text);
+    line-height: 1.5;
+}
+
+.video-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.video-link {
+    padding: 12px 16px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.video-link:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-color);
+    text-decoration: none;
+}
+
+.page-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+/* Update tool items to work with links */
+.tool-item a {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.tool-item:hover a {
+    text-decoration: none;
+}
+
+/* Dark mode specific overrides */
+body.dark-mode .exercise-selector,
+body.dark-mode .guidelines-section,
+body.dark-mode .tool-item,
+body.dark-mode .video-link {
+    background-color: var(--secondary-bg);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .exercise-form select {
+    background-color: var(--form-bg);
+    color: var(--input-text);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .guidelines-section li {
+    color: var(--secondary-text);
+}
+
+body.dark-mode .video-link {
+    background-color: var(--background-color);
+}
+
+body.dark-mode .video-link:hover,
+body.dark-mode .tool-item:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-color);
+}
+
+/* Add transitions for smooth theme switching */
+.exercise-selector,
+.guidelines-section,
+.video-link,
+.tool-item,
+select,
+h2, h3, p, li {
+    transition: all 0.3s ease;
+}
+
+/* Greeting styles */
+.greeting-container {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.greeting {
+    font-size: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.greeting-icon {
+    color: #ff6b6b;
+    font-size: 2rem;
+}
+
+/* Input section styles */
+.input-section {
+    background-color: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.input-label {
+    color: var(--secondary-text);
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+/* Chat input styles */
+.chat-input-container {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.file-upload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--secondary-text);
+}
+
+.file-upload:hover {
+    border-color: var(--accent-color);
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.chat-textarea {
+    width: 100%;
+    min-height: 60px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    resize: vertical;
+    font-family: inherit;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Collaboration section styles */
+.collaboration-section {
+    margin-top: 24px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: var(--secondary-bg);
+}
+
+.collaboration-text {
+    color: var(--secondary-text);
+    margin-bottom: 16px;
+}
+
+.tools-list {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+}
+
+.tool-item {
+    background-color: var(--background-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.tool-item:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--accent-color);
+}
+
+/* Menu dropdown styles */
+.menu-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    min-width: 180px;
+}
+
+/* Show dropdown on hover */
+.header-controls:hover .menu-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.menu-item {
+    padding: 12px 24px;
+    color: var(--text-color);
+    text-decoration: none;
+    display: block;
+    white-space: nowrap;
+}
+
+.menu-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.menu-divider {
+    border-top: 1px solid var(--border-color);
+    margin: 8px 0;
+}
+
+/* SVG icon colors */
+.menu-icon, 
+.file-upload svg {
+    stroke: var(--text-color);
+}
+
+/* Dark mode specific adjustments */
+body.dark-mode .file-upload svg {
+    stroke: var(--text-color);
+}
+
+body.dark-mode .chat-textarea::placeholder {
+    color: var(--secondary-text);
+}
+
+/* Ensure proper text color in dark mode */
+body.dark-mode .tool-item,
+body.dark-mode .menu-item,
+body.dark-mode .input-label,
+body.dark-mode .collaboration-text {
+    color: var(--text-color);
+}
+
+/* Update dumbbell icon styles */
+.dumbbell-icon {
+    width: 28px;
+    height: 28px;
+    stroke: var(--text-color);
+    fill: none;
+    transition: transform 0.3s ease;
+}
+
+.menu-button:hover .dumbbell-icon {
+    transform: rotate(90deg);
+}
+
+/* Dark mode adjustment */
+body.dark-mode .dumbbell-icon {
+    stroke: var(--text-color);
+}
+
+/* Authentication styles */
+.auth-container {
+    max-width: 400px;
+    margin: 48px auto;
+    padding: 32px;
+    background-color: var(--background-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(110, 86, 207, 0.1);
+}
+
+.auth-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-button:hover {
+    opacity: 0.9;
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--secondary-text);
+}
+
+.auth-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .auth-container {
+    background-color: var(--background-color);
+    border-color: var(--border-color);
+}
+
+body.dark-mode .form-group input {
+    background-color: var(--form-bg);
+    border-color: var(--border-color);
+    color: var(--input-text);
+}
+
+body.dark-mode .form-group input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(159, 140, 255, 0.1);
+}
+
+body.dark-mode .auth-link {
+    color: var(--secondary-text);
+}
+
+/* Add these to your existing styles */
+.home-link {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.home-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+/* Update auth container styles */
+.auth-container {
+    background-color: var(--secondary-bg);
+    border-radius: 12px;
+    padding: 32px;
+    margin-top: 24px;
+    border: 1px solid var(--border-color);
+}
+
+/* Update all elements that change during theme switch to have the same transition duration */
+header,
+.header-title,
+.menu-button,
+.menu-icon,
+.menu-dropdown,
+.auth-container,
+.form-group input,
+.auth-button,
+.auth-link,
+.greeting,
+.greeting-icon,
+.input-section,
+.chat-textarea,
+.collaboration-section,
+.tool-item,
+.menu-item,
+.dumbbell-icon,
+.home-link,
+.page-title,
+.flash-messages li,
+.form-group label,
+.input-label,
+.collaboration-text {
+    transition: all 0.3s ease;
+}
+
+/* Add transition group for background colors */
+.auth-container,
+.input-section,
+.collaboration-section,
+.menu-dropdown,
+.tool-item,
+.form-group input,
+header {
+    transition: background-color 0.3s ease,
+                border-color 0.3s ease,
+                color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Update menu dropdown to prevent flickering */
+.menu-dropdown {
+    transform-origin: top right;
+    transition: opacity 0.3s ease,
+                visibility 0.3s ease,
+                transform 0.3s ease,
+                background-color 0.3s ease;
+}
+
+.header-controls:hover .menu-dropdown {
+    transform: scale(1);
+}
+
+/* Ensure smooth color transitions for text */
+.text-transition {
+    transition: color 0.3s ease;
+}
+
+/* Add hardware acceleration for smoother transitions */
+body, 
+.menu-dropdown,
+.auth-container,
+.input-section,
+.collaboration-section,
+.claude-container {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+    will-change: transform, opacity, background-color, color;
+}
+
+/* Group all theme-dependent elements */
+.theme-transition-group {
+    transition: all var(--transition-speed) var(--transition-timing);
+}
+
+/* Apply the theme transition group to all relevant elements */
+body,
+header,
+.header-title,
+.menu-button,
+.menu-icon,
+.menu-dropdown,
+.auth-container,
+.form-group,
+.form-group input,
+.form-group label,
+.auth-button,
+.auth-link,
+.greeting,
+.greeting-icon,
+.input-section,
+.chat-textarea,
+.collaboration-section,
+.tool-item,
+.menu-item,
+.dumbbell-icon,
+.home-link,
+.page-title,
+.flash-messages li,
+.input-label,
+.collaboration-text,
+.claude-container {
+    transition: all var(--transition-speed) var(--transition-timing);
+}
+
+/* Remove individual transition properties and use the group instead */
+.menu-dropdown {
+    transform-origin: top right;
+}
+
+/* Add this class to handle the transitioning state */
+body.transitioning,
+body.transitioning * {
+    transition: all var(--transition-speed) var(--transition-timing);
+}
+
+/* Include html in transitions */
+html,
+html *,
+body,
+body * {
+    transition: background-color var(--transition-speed) var(--transition-timing),
+                color var(--transition-speed) var(--transition-timing),
+                border-color var(--transition-speed) var(--transition-timing);
+}
+
+/* Update transitioning state */
+html.transitioning,
+html.transitioning *,
+body.transitioning,
+body.transitioning * {
+    transition: all var(--transition-speed) var(--transition-timing);
+} 

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Workout AI App{% endblock %}
+
+{% block content %}
+<div class="claude-container">
+    <div class="greeting-container">
+        <div class="greeting">
+            <span class="greeting-icon">✴️</span>
+            Welcome, {{ current_user.username }}!
+        </div>
+    </div>
+
+    <div class="dashboard-nav">
+         <a href="{{ url_for('home') }}">Upload a New Workout Video</a> |
+         <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+
+    <section class="session-list">
+         <h2>Your Workout Sessions</h2>
+         {% if sessions %}
+           <ul>
+             {% for session in sessions %}
+               <li>
+                 <strong>{{ session.exercise }}</strong> - {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}
+                 - <a href="{{ url_for('session_detail', session_id=session.id) }}">View Details</a>
+               </li>
+             {% endfor %}
+           </ul>
+         {% else %}
+           <p>No sessions yet. Try uploading a workout video!</p>
+         {% endif %}
+    </section>
+</div>
+{% endblock %} 

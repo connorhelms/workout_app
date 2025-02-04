@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Workout AI App{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block extra_css %}{% endblock %}
+    {% block head_scripts %}{% endblock %}
+    <script>
+        // Check and apply theme immediately
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.documentElement.classList.add('dark-mode');
+        }
+    </script>
+</head>
+<body>
+    {% block header %}
+    <header>
+        <h1 class="header-title">
+            <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+        </h1>
+        <button id="darkModeButton" class="dark-mode-toggle" onclick="toggleDarkMode()"></button>
+    </header>
+    {% endblock %}
+    
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    {% block scripts %}
+    <script>
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const body = document.body;
+            const themeText = document.getElementById('themeText');
+            
+            body.classList.add('transitioning');
+            html.classList.add('transitioning');
+            
+            void body.offsetWidth;
+            
+            const isDarkMode = !html.classList.contains('dark-mode');
+            
+            if (isDarkMode) {
+                html.classList.add('dark-mode');
+                body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'true');
+                if (themeText) themeText.textContent = 'Switch to Light Mode';
+            } else {
+                html.classList.remove('dark-mode');
+                body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'false');
+                if (themeText) themeText.textContent = 'Switch to Dark Mode';
+            }
+            
+            setTimeout(() => {
+                body.classList.remove('transitioning');
+                html.classList.remove('transitioning');
+            }, 300);
+        }
+
+        // Apply theme state to both html and body on load
+        window.addEventListener('DOMContentLoaded', function() {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            const themeText = document.getElementById('themeText');
+            
+            if (isDarkMode) {
+                document.documentElement.classList.add('dark-mode');
+                document.body.classList.add('dark-mode');
+                if (themeText) themeText.textContent = 'Switch to Light Mode';
+            }
+        });
+    </script>
+    {% endblock %}
+</body>
+</html> 

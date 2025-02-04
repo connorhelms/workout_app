@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Previous Analyses{% endblock %}
+
+{% block content %}
+<div class="claude-container">
+    <h1>Previous Analyses</h1>
+    {% if analyses %}
+        <ul>
+            {% for analysis in analyses %}
+                <li>
+                    <strong>{{ analysis.exercise }}</strong> - {{ analysis.created_at.strftime('%Y-%m-%d %H:%M') }}
+                    <a href="{{ url_for('analysis_detail', analysis_id=analysis.id) }}">View Details</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No previous analyses available.</p>
+    {% endif %}
+</div>
+{% endblock %} 

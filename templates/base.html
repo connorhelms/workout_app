@@ -26,6 +26,16 @@
     {% endblock %}
     
     <div class="container">
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('characters') }}" class="menu-item">Choose Coach</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+        </div>
         {% block content %}{% endblock %}
     </div>
     {% block scripts %}

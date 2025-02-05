@@ -2,12 +2,49 @@
 
 {% block title %}Form Guidelines{% endblock %}
 
+{% block header %}
+<header>
+    <h1 class="header-title">
+        <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+    </h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Left weight plates -->
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                
+                <!-- Bar -->
+                <path d="M7 12h10"/>
+                
+                <!-- Right weight plates -->
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
 {% block content %}
 <div class="claude-container">
     <h1>Workout Form Guidelines</h1>
 
     <!-- Squats Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Squats</summary>
         <div class="exercise-details">
             <p>
@@ -26,7 +63,7 @@
     </details>
 
     <!-- Deadlifts Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Deadlifts</summary>
         <div class="exercise-details">
             <p>
@@ -45,7 +82,7 @@
     </details>
 
     <!-- Bench Press Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Bench Press</summary>
         <div class="exercise-details">
             <p>
@@ -64,7 +101,7 @@
     </details>
 
     <!-- Overhead Press Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Overhead Press</summary>
         <div class="exercise-details">
             <p>
@@ -83,7 +120,7 @@
     </details>
 
     <!-- Barbell Rows Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Barbell Rows</summary>
         <div class="exercise-details">
             <p>
@@ -102,7 +139,7 @@
     </details>
 
     <!-- Pull-ups Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Pull-ups</summary>
         <div class="exercise-details">
             <p>
@@ -120,7 +157,7 @@
     </details>
 
     <!-- Lunges Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Lunges</summary>
         <div class="exercise-details">
             <p>
@@ -139,7 +176,7 @@
     </details>
 
     <!-- Plank Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Plank</summary>
         <div class="exercise-details">
             <p>
@@ -157,7 +194,7 @@
     </details>
 
     <!-- Dips Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Dips</summary>
         <div class="exercise-details">
             <p>
@@ -174,7 +211,7 @@
     </details>
 
     <!-- Leg Press Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Leg Press</summary>
         <div class="exercise-details">
             <p>
@@ -192,7 +229,7 @@
     </details>
 
     <!-- Bicep Curls Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Bicep Curls</summary>
         <div class="exercise-details">
             <p>
@@ -210,7 +247,7 @@
     </details>
 
     <!-- Tricep Extensions Guidelines -->
-    <details class="exercise-accordion">
+    <details class="exercise-accordion" style="margin-bottom: 30px;">
         <summary>Tricep Extensions</summary>
         <div class="exercise-details">
             <p>
@@ -227,4 +264,19 @@
         </div>
     </details>
 </div>
+
+<script>
+document.querySelector('.menu-button').addEventListener('click', function(event) {
+    event.stopPropagation();
+    document.getElementById('menuDropdown').classList.toggle('show');
+});
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.menu-button') && !event.target.closest('.menu-dropdown')) {
+        var dropdowns = document.getElementsByClassName('menu-dropdown');
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].classList.remove('show');
+        }
+    }
+});
+</script>
 {% endblock %} 

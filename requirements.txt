@@ -2,5 +2,8 @@ Flask
 Flask-SQLAlchemy
 Flask-Login
 python-dotenv
-openai
-Werkzeug 
+openai==0.28.0
+Werkzeug==3.0.0
+python-dotenv==1.0.1
+moviepy==1.0.3
+opencv-python>=4.8.0

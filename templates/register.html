@@ -2,10 +2,7 @@
 
 {% block title %}Register - Workout AI Coach{% endblock %}
 
-{% block content %}
-<!-- Remove the default header from base.html -->
-{% block header %}{% endblock %}
-
+{% block header %}
 <header>
     <h1 class="header-title">
         <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
@@ -29,7 +26,9 @@
         </div>
     </div>
 </header>
+{% endblock %}
 
+{% block content %}
 <div class="claude-container">
     <div class="greeting-container">
         <div class="greeting">
@@ -75,4 +74,19 @@
         </p>
     </div>
 </div>
+
+<script>
+document.querySelector('.menu-button').addEventListener('click', function(event) {
+    event.stopPropagation();
+    document.getElementById('menuDropdown').classList.toggle('show');
+});
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.menu-button') && !event.target.closest('.menu-dropdown')) {
+        var dropdowns = document.getElementsByClassName('menu-dropdown');
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].classList.remove('show');
+        }
+    }
+});
+</script>
 {% endblock %} 

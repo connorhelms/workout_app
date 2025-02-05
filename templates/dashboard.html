@@ -2,34 +2,199 @@
 
 {% block title %}Dashboard - Workout AI App{% endblock %}
 
-{% block content %}
-<div class="claude-container">
-    <div class="greeting-container">
-        <div class="greeting">
-            <span class="greeting-icon">✴️</span>
-            Welcome, {{ current_user.username }}!
+{% block header %}
+<header>
+    <h1 class="header-title">
+        <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+    </h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                <path d="M7 12h10"/>
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('characters') }}" class="menu-item">Choose Coach</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
         </div>
     </div>
+</header>
+{% endblock %}
 
-    <div class="dashboard-nav">
-         <a href="{{ url_for('home') }}">Upload a New Workout Video</a> |
-         <a href="{{ url_for('logout') }}">Logout</a>
+{% block content %}
+<div class="claude-container">
+    <h1>Workout Dashboard</h1>
+
+    {% if sessions %}
+        {% for session in sessions %}
+            <details class="exercise-accordion" style="margin-bottom: 30px;">
+                <summary>{{ session.display_name }} - {{ session.formatted_date }}</summary>
+                <div class="exercise-details">
+                    <p>
+                        <strong>Type:</strong> Video
+                    </p>
+                    {% if session.analysis %}
+                    <div class="analysis-section">
+                        {% for section in session.analysis.split('\n\n') %}
+                            {% if section.strip() %}
+                                {% set section_parts = section.split('\n', 1) %}
+                                {% if section_parts|length > 1 %}
+                                    <div class="analysis-box">
+                                        <h3>{{ section_parts[0] }}</h3>
+                                        <ul>
+                                            {% for point in section_parts[1].split('\n') %}
+                                                {% if point.strip() %}
+                                                    <li>{{ point.strip().lstrip('- ') }}</li>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if session.feedback %}
+                    <div class="feedback-section">
+                        <div class="feedback-box">
+                            <h3>AI Coach - {{ session.character_name|default('Personal Trainer') }} {{ CHARACTERS[session.character_id].emoji if session.character_id }}</h3>
+                            <p>{{ session.feedback }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if session.notes %}
+                    <p>
+                        <strong>Notes:</strong><br>
+                        {{ session.notes }}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="video-links">
+                        <a href="{{ url_for('session_detail', session_id=session.id) }}" class="tool-item">View Full Details</a>
+                        <button onclick="deleteSession('{{ session.id }}')" class="tool-item delete-button">Delete Workout</button>
+                    </div>
+                </div>
+            </details>
+        {% endfor %}
+    {% else %}
+        <p>No sessions yet. Try uploading a workout video!</p>
+    {% endif %}
+    
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="/" class="tool-item">Upload New Workout</a>
     </div>
 
-    <section class="session-list">
-         <h2>Your Workout Sessions</h2>
-         {% if sessions %}
-           <ul>
-             {% for session in sessions %}
-               <li>
-                 <strong>{{ session.exercise }}</strong> - {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}
-                 - <a href="{{ url_for('session_detail', session_id=session.id) }}">View Details</a>
-               </li>
-             {% endfor %}
-           </ul>
-         {% else %}
-           <p>No sessions yet. Try uploading a workout video!</p>
-         {% endif %}
-    </section>
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Delete Workout</h3>
+            <p>Are you sure you want to delete this workout session?</p>
+            <div class="modal-buttons">
+                <button class="tool-item" onclick="confirmDelete()">Yes, Delete</button>
+                <button class="tool-item" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+let sessionToDelete = null;
+
+function deleteSession(sessionId) {
+    sessionToDelete = sessionId;
+    document.getElementById('deleteModal').classList.add('show');
+}
+
+function closeModal() {
+    document.getElementById('deleteModal').classList.remove('show');
+    sessionToDelete = null;
+}
+
+function confirmDelete() {
+    if (sessionToDelete) {
+        fetch(`/delete-session/${sessionToDelete}`, {
+            method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove the workout from the UI
+                const element = document.querySelector(`details button[onclick*="${sessionToDelete}"]`).closest('details');
+                if (element) {
+                    element.remove();
+                }
+                // If no more workouts, show the empty message
+                if (document.querySelectorAll('details').length === 0) {
+                    const container = document.querySelector('.claude-container');
+                    container.innerHTML = '<p>No sessions yet. Try uploading a workout video!</p>' +
+                        '<div style="text-align: center; margin-top: 20px;">' +
+                        '<a href="/" class="tool-item">Upload New Workout</a>' +
+                        '</div>';
+                }
+                closeModal();
+            } else {
+                alert('Failed to delete workout session');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting workout session');
+        });
+    }
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+        closeModal();
+    }
+}
+
+document.querySelector('.menu-button').addEventListener('click', function(event) {
+    event.stopPropagation();
+    document.getElementById('menuDropdown').classList.toggle('show');
+});
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.menu-button') && !event.target.closest('.menu-dropdown')) {
+        var dropdowns = document.getElementsByClassName('menu-dropdown');
+        for (var i = 0; i < dropdowns.length; i++) {
+            dropdowns[i].classList.remove('show');
+        }
+    }
+});
+
+function validateVideoUpload(input) {
+    const file = input.files[0];
+    if (file) {
+        const video = document.createElement('video');
+        video.preload = 'metadata';
+
+        video.onloadedmetadata = function() {
+            window.URL.revokeObjectURL(video.src);
+            if (video.duration > 30) {
+                alert('Video must be 30 seconds or shorter');
+                input.value = ''; // Clear the input
+            }
+        }
+
+        video.src = URL.createObjectURL(file);
+    }
+}
+</script>
 {% endblock %} 

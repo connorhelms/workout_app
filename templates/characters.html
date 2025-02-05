@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Choose Your Coach - Workout AI Coach{% endblock %}
+
+{% block header %}
+<header>
+    <h1 class="header-title">
+        <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+    </h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                <path d="M7 12h10"/>
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('characters') }}" class="menu-item">Choose Coach</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="claude-container">
+    <div class="greeting-container">
+        <div class="greeting">
+            <span class="greeting-icon">✴️</span>
+            Choose Your Coach
+        </div>
+    </div>
+
+    <div class="characters-grid">
+        {% for character in characters %}
+        <div class="character-card {% if character.id == current_character %}selected{% endif %}" onclick="selectCharacter('{{ character.id }}')">
+            <div class="character-icon">{{ character.emoji }}</div>
+            <h3>{{ character.name }}</h3>
+            <p>{{ character.description }}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="start-button-container" style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('home') }}" class="tool-item start-button" id="startButton">
+            Let's Get to Work
+        </a>
+    </div>
+</div>
+
+<script>
+function selectCharacter(characterId) {
+    fetch('/set-character', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({character_id: characterId})
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI to show selected character
+            document.querySelectorAll('.character-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`.character-card[onclick*="${characterId}"]`).classList.add('selected');
+           
+            // Update button text based on selected character
+            const startButton = document.getElementById('startButton');
+            const buttonText = {
+                'trainer': "Let's Get to Work! 💪",
+                'goggins': "STAY HARD! NO EXCUSES! 😤",
+                'musashi': "Begin the Journey ⚔️",
+                'drill': "MOVE IT, RECRUIT! 🎖️",
+                'chief': "Mission Start, Spartan 🎮",
+                'iroh': "Time to Brew Success 🍵",
+                'durden': "Break Free 👊"
+            };
+            startButton.textContent = buttonText[characterId] || "Let's Get to Work!";
+        }
+    });
+}
+
+// Set initial button text based on current character
+document.addEventListener('DOMContentLoaded', function() {
+    const currentCharacter = '{{ current_character }}';
+    const buttonText = {
+        'trainer': "Let's Get to Work! 💪",
+        'goggins': "STAY HARD! NO EXCUSES! 😤",
+        'musashi': "Begin the Journey ⚔️",
+        'drill': "MOVE IT, RECRUIT! 🎖️",
+        'chief': "Mission Start, Spartan 🎮",
+        'iroh': "Time to Brew Success 🍵",
+        'durden': "Break Free 👊"
+    };
+    document.getElementById('startButton').textContent = buttonText[currentCharacter] || "Let's Get to Work!";
+});
+</script>
+{% endblock %} 

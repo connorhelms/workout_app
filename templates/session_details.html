@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Previous Session Details - Workout AI App{% endblock %}
+
+{% block header %}
+<header>
+    <h1 class="header-title">
+        <a href="{{ url_for('home') }}" class="home-link">Workout AI Coach</a>
+    </h1>
+    <div class="header-controls">
+        <button class="menu-button">
+            <svg class="menu-icon dumbbell-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Left weight plates -->
+                <rect x="2" y="8" width="2" height="8" rx="1"/>
+                <rect x="4" y="6" width="3" height="12" rx="1"/>
+                <!-- Bar -->
+                <path d="M7 12h10"/>
+                <!-- Right weight plates -->
+                <rect x="17" y="6" width="3" height="12" rx="1"/>
+                <rect x="20" y="8" width="2" height="8" rx="1"/>
+            </svg>
+        </button>
+        <div class="menu-dropdown" id="menuDropdown">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('dashboard') }}" class="menu-item">Dashboard</a>
+                <a href="{{ url_for('characters') }}" class="menu-item">Choose Coach</a>
+                <a href="{{ url_for('logout') }}" class="menu-item">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="menu-item">Login</a>
+                <a href="{{ url_for('register') }}" class="menu-item">Register</a>
+            {% endif %}
+            <div class="menu-divider"></div>
+            <a href="#" class="menu-item" onclick="toggleDarkMode(); return false;">
+                <span id="themeText">Toggle Dark Mode</span>
+            </a>
+        </div>
+    </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="claude-container">
+    <h2 class="text-center">Previous Session Details</h2>
+    
+    {% if sessions %}
+        {% for session in sessions %}
+            <div class="card" style="margin-bottom: 20px;">
+                <h3>{{ session.exercise }}</h3>
+                <p><strong>Date:</strong> {{ session.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                {% if session.analysis %}
+                <div>
+                    <h4>Analysis</h4>
+                    <p>{{ session.analysis }}</p>
+                </div>
+                {% endif %}
+                {% if session.feedback %}
+                <div>
+                    <h4>Feedback</h4>
+                    <p>{{ session.feedback }}</p>
+                </div>
+                {% endif %}
+                {% if session.notes %}
+                <div>
+                    <h4>Notes</h4>
+                    <p>{{ session.notes }}</p>
+                </div>
+                {% endif %}
+                <div class="text-center" style="margin-top: 10px;">
+                    <a href="/session/{{ session.id }}" class="tool-item">View Full Details</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-center">No session details available.</p>
+    {% endif %}
+</div>
+{% endblock %} 

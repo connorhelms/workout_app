@@ -1,9 +1,9 @@
-Flask
-Flask-SQLAlchemy
-Flask-Login
-python-dotenv
+Flask>=2.2.0,<3.0.0
+Flask-SQLAlchemy==3.0.2
+Flask-Login==0.6.2
+python-dotenv==1.0.0
 openai==0.28.0
-Werkzeug==3.0.0
-python-dotenv==1.0.1
+Werkzeug==2.3.7
 moviepy==1.0.3
 opencv-python>=4.8.0
+gunicorn==20.1.0
